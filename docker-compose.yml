@@ -8,7 +8,7 @@ services:
       - POSTGRES_PASSWORD=postgres
 
   plausible_events_db:
-    image: clickhouse/clickhouse-server:25.8-alpine
+    image: clickhouse/clickhouse-server:25.12-alpine
     environment:
       - CLICKHOUSE_SKIP_USER_SETUP=1
     restart: always
