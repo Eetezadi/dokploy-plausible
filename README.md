@@ -1,62 +1,41 @@
-# Plausible Analytics Deployment
+# Plausible Analytics for Dokploy
 
-Self-hosted Plausible Analytics deployment for Dokploy.
+Self-hosted Plausible Community Edition deployment for Dokploy.
 
-## Setup
+## Quick Start
 
-1. Clone this repository
-2. Copy `.env.example` to `.env`
-3. Fill in your actual values in `.env` (get from existing Dokploy deployment)
-4. In Dokploy, connect this repo to your existing Plausible app
+### Fork This Repository
 
-## Important Notes
+1. Fork this repository to your GitHub account
+2. In Dokploy, create a new `Compose` service from your forked repository
+3. In your service settings, add environment variables from `.env.example`. The `docker-compose.yml` automatically loads these variables
+4. Set a domain on port `8000` 
 
-- **Never commit `.env` file** - it contains secrets
-- `SECRET_KEY_BASE` and `TOTP_VAULT_KEY` must match your existing deployment
-- Regenerating secrets will break access to encrypted data
+## Configuration
 
-## Deployment
+### Required Variables
 
-### Connect to Dokploy
+- **BASE_URL**: Domain where Plausible will be accessible (e.g., `https://analytics.example.com`)
+- **SECRET_KEY_BASE**: Encryption key (generate with: `openssl rand -base64 48`)
+- **TOTP_VAULT_KEY**: 2FA vault key (generate with: `openssl rand -base64 24`)
 
-1. Go to your existing Plausible app in Dokploy
-2. Navigate to **Source** tab
-3. Select **Git Provider** → GitHub
-4. Choose this repository
-5. Select branch (e.g., `main`)
-6. Deploy
+> ⚠️ **Important**: If migrating from an existing deployment, use your existing `SECRET_KEY_BASE` and `TOTP_VAULT_KEY` values. Regenerating these will break encrypted data and disable 2FA.
 
-### Domain Configuration
+### Optional Variables
 
-Configure domain in Dokploy UI:
-- Service: `plausible`
-- Port: `8000`
-- Host: `pa.eetezadi.com`
+For additional features, see `.env.example` for configuration options:
+- Email/SMTP (send notifications and password resets)
+- Google OAuth (allow users to sign in with Google)
+- Geolocation (GeoIP database setup)
+- Performance tuning (Erlang VM optimization)
 
-### Backups
-
-Volume backups in Dokploy cover:
-- `db-data` - PostgreSQL database
-- `event-data` - ClickHouse analytics data
-- `event-logs` - ClickHouse logs
+For comprehensive documentation on all configuration options, visit the [official Plausible Community Edition (CE)](https://github.com/plausible/community-edition/).
 
 ## Updates
 
-To update Plausible version:
-1. Edit `docker-compose.yml`
-2. Change image tag: `ghcr.io/plausible/community-edition:v2.1.6`
-3. Commit and push
-4. Dokploy will redeploy automatically (if enabled)
+To update the Plausible version:
 
-## Structure
-```
-.
-├── docker-compose.yml              # Main compose file
-├── .env.example                    # Environment template
-├── .env                           # Actual secrets (gitignored)
-├── files/
-│   └── clickhouse/                # ClickHouse configuration
-│       ├── clickhouse-config.xml
-│       └── clickhouse-user-config.xml
-└── README.md
-```
+1. Edit `docker-compose.yml`
+2. Update the image tag: `ghcr.io/plausible/community-edition:vX.X.X`
+3. Commit and push
+4. Dokploy will redeploy automatically (if webhook enabled)
