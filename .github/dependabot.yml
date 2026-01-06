@@ -1,6 +1,6 @@
 version: 2
 updates:
-  - package-ecosystem: "docker-compose"
+  - package-ecosystem: "docker"
     directory: "/"
     schedule:
       interval: "weekly"
@@ -12,3 +12,8 @@ updates:
     labels:
       - "dependencies"
       - "docker"
+    ignore:
+      # Pin PostgreSQL to v18 major version
+      - dependency-name: "postgres"
+        update-types: ["version-update:semver-major"]
+        versions: [">=19"]
