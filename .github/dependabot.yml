@@ -16,4 +16,6 @@ updates:
       # Pin PostgreSQL to v18 major version
       - dependency-name: "postgres"
         update-types: ["version-update:semver-major"]
-        versions: [">=19"]
+      # Pin ClickHouse to LTS releases (stay on current LTS)
+      - dependency-name: "clickhouse/clickhouse-server"
+        update-types: ["version-update:semver-mmajor"]
