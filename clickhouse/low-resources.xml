@@ -18,6 +18,7 @@
             <!--
             https://clickhouse.com/docs/en/operations/settings/settings#output_format_parallel_formatting -->
             <output_format_parallel_formatting>0</output_format_parallel_formatting>
+            <max_memory_usage>2000000000</max_memory_usage>
         </default>
     </profile>
 </clickhouse>
