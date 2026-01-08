@@ -6,6 +6,11 @@ services:
       - db-data:/var/lib/postgresql/data
     environment:
       - POSTGRES_PASSWORD=postgres
+    deploy:
+      resources:
+        limits:
+          cpus: "${POSTGRES_CPU_LIMIT:-1.0}"
+          memory: "${POSTGRES_MEMORY_LIMIT:-1G}"
 
   plausible_events_db:
     image: clickhouse/clickhouse-server:25.12-alpine
@@ -22,6 +27,11 @@ services:
       nofile:
         soft: 262144
         hard: 262144
+    deploy:
+      resources:
+        limits:
+          cpus: "${CLICKHOUSE_CPU_LIMIT:-2.0}"
+          memory: "${CLICKHOUSE_MEMORY_LIMIT:-4G}"
 
 
   plausible:
