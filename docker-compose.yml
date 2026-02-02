@@ -13,7 +13,7 @@ services:
           memory: "${POSTGRES_MEMORY_LIMIT:-1G}"
 
   plausible_events_db:
-    image: clickhouse/clickhouse-server:25.12-alpine
+    image: clickhouse/clickhouse-server:26.1-alpine
     environment:
       - CLICKHOUSE_SKIP_USER_SETUP=1
     restart: always
