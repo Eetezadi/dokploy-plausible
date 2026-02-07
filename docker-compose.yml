@@ -23,6 +23,7 @@ services:
       - ./clickhouse/logs.xml:/etc/clickhouse-server/config.d/logs.xml:ro
       - ./clickhouse/ipv4-only.xml:/etc/clickhouse-server/config.d/ipv4-only.xml:ro
       - ./clickhouse/low-resources.xml:/etc/clickhouse-server/config.d/low-resources.xml:ro
+      - ./clickhouse/backup.xml:/etc/clickhouse-server/config.d/backup.xml:ro
     ulimits:
       nofile:
         soft: 262144
