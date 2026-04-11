@@ -1,6 +1,6 @@
 version: 2
 updates:
-  - package-ecosystem: "docker"
+  - package-ecosystem: "docker-compose"
     directory: "/"
     schedule:
       interval: "weekly"
@@ -16,6 +16,6 @@ updates:
       # Pin PostgreSQL to v18 major version
       - dependency-name: "postgres"
         update-types: ["version-update:semver-major"]
-      # Pin ClickHouse to LTS releases (stay on current LTS)
+      # Pin ClickHouse to Major Version
       - dependency-name: "clickhouse/clickhouse-server"
-        update-types: ["version-update:semver-mmajor"]
+        update-types: ["version-update:semver-major"]
