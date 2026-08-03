@@ -1,0 +1,23 @@
+<!-- https://clickhouse.com/docs/en/operations/tips#using-less-than-16gb-of-ram -->
+<!-- Must be mounted into users.d/ (not config.d/): ClickHouse only reads
+     <profiles> from the users config. See plausible/community-edition#265. -->
+<clickhouse>
+    <profiles>
+        <default>
+            <!-- https://clickhouse.com/docs/en/operations/settings/settings#max_threads -->
+            <max_threads>1</max_threads>
+            <!-- https://clickhouse.com/docs/en/operations/settings/settings#max_block_size -->
+            <max_block_size>8192</max_block_size>
+            <!-- https://clickhouse.com/docs/en/operations/settings/settings#max_download_threads -->
+            <max_download_threads>1</max_download_threads>
+            <!--
+            https://clickhouse.com/docs/en/operations/settings/settings#input_format_parallel_parsing -->
+            <input_format_parallel_parsing>0</input_format_parallel_parsing>
+            <!--
+            https://clickhouse.com/docs/en/operations/settings/settings#output_format_parallel_formatting -->
+            <output_format_parallel_formatting>0</output_format_parallel_formatting>
+            <!-- Per-query memory cap, kept below CLICKHOUSE_MEMORY_LIMIT -->
+            <max_memory_usage>1000000000</max_memory_usage>
+        </default>
+    </profiles>
+</clickhouse>

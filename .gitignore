@@ -1,5 +1,3 @@
-## 3. `.gitignore`
-```
 # Environment variables with secrets
 .env
 
@@ -13,3 +11,6 @@ Thumbs.db
 *~
 .vscode/
 .idea/
+
+# Claude Code local state
+.claude/
