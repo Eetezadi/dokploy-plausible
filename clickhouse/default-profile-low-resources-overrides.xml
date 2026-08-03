@@ -17,7 +17,7 @@
             https://clickhouse.com/docs/en/operations/settings/settings#output_format_parallel_formatting -->
             <output_format_parallel_formatting>0</output_format_parallel_formatting>
             <!-- Per-query memory cap, kept below CLICKHOUSE_MEMORY_LIMIT -->
-            <max_memory_usage>2000000000</max_memory_usage>
+            <max_memory_usage>1000000000</max_memory_usage>
         </default>
     </profiles>
 </clickhouse>

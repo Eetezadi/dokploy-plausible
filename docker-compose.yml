@@ -13,7 +13,7 @@ services:
       resources:
         limits:
           cpus: "${POSTGRES_CPU_LIMIT:-1.0}"
-          memory: "${POSTGRES_MEMORY_LIMIT:-1G}"
+          memory: "${POSTGRES_MEMORY_LIMIT:-512M}"
 
   plausible_events_db:
     image: clickhouse/clickhouse-server:26.5-alpine
@@ -43,7 +43,7 @@ services:
       resources:
         limits:
           cpus: "${CLICKHOUSE_CPU_LIMIT:-2.0}"
-          memory: "${CLICKHOUSE_MEMORY_LIMIT:-4G}"
+          memory: "${CLICKHOUSE_MEMORY_LIMIT:-2G}"
 
 
   plausible:
@@ -67,6 +67,10 @@ services:
       nofile:
         soft: 65535
         hard: 65535
+    deploy:
+      resources:
+        limits:
+          memory: "${PLAUSIBLE_MEMORY_LIMIT:-1G}"
     ports:
       - 8000
 
