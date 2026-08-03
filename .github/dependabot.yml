@@ -16,6 +16,12 @@ updates:
       # Pin PostgreSQL to v18 major version
       - dependency-name: "postgres"
         update-types: ["version-update:semver-major"]
-      # Pin ClickHouse to Major Version
+      # ClickHouse ships monthly and its data directory cannot be downgraded,
+      # so every bump is a one-way door. Plausible only tests against 25.11
+      # (upstream compose still pins 24.12), and we already run ahead of that.
+      # Hold the version and upgrade deliberately with a backup instead.
+      # See the "Upgrading ClickHouse" section in README.md.
       - dependency-name: "clickhouse/clickhouse-server"
-        update-types: ["version-update:semver-major"]
+        update-types:
+          - "version-update:semver-major"
+          - "version-update:semver-minor"

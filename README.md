@@ -31,6 +31,12 @@ For additional features, see `.env.example` for configuration options:
 
 For comprehensive documentation on all configuration options, visit the [official Plausible Community Edition (CE)](https://github.com/plausible/community-edition/).
 
+### Database Credentials
+
+Postgres runs with the default `postgres`/`postgres` credentials. It is not published to the host — only containers on the same Docker network can reach it — and Plausible connects using its built-in `DATABASE_URL` default.
+
+Note that `POSTGRES_PASSWORD` only takes effect on first boot, when the data volume is initialised. Changing it later does nothing on its own: you would need to `ALTER USER` inside the running database *and* set a matching `DATABASE_URL` for Plausible.
+
 ## Updates
 
 To update the Plausible version:
@@ -39,3 +45,15 @@ To update the Plausible version:
 2. Update the image tag: `ghcr.io/plausible/community-edition:vX.X.X`
 3. Commit and push
 4. Dokploy will redeploy automatically (if webhook enabled)
+
+Check the [release notes](https://github.com/plausible/analytics/releases) before upgrading — some releases also change files in this repository (for example, v3.2.0 changed the ClickHouse profile configuration).
+
+### Upgrading ClickHouse
+
+ClickHouse releases monthly, but **downgrades are not supported** — once the data directory has been opened by a newer version, you cannot go back without dumping and restoring the events database. Dependabot is therefore configured to leave `clickhouse/clickhouse-server` alone.
+
+When you do upgrade:
+
+1. Back up the `event-data` volume first.
+2. Move one minor version at a time.
+3. Stay close to what Plausible actually tests against (see the ClickHouse image in [plausible/analytics CI](https://github.com/plausible/analytics/blob/master/.github/workflows/elixir.yml)).
