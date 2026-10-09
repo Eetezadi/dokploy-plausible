@@ -49,6 +49,12 @@ If you raise `CLICKHOUSE_MEMORY_LIMIT`, also raise `max_memory_usage` in `clickh
 
 > These limits rely on Docker actually enforcing `deploy.resources.limits`, which Dokploy does. If you run this compose file with plain `docker compose up` outside Dokploy (no Swarm, no `--compatibility` flag), that block is silently ignored. Verify with `docker inspect <container> --format '{{.HostConfig.Memory}}'` — `0` means no limit is actually applied.
 
+### Data Volumes
+
+Only two volumes hold data you can't get back: `db-data` (Postgres: sites, users, goals, settings) and `event-data` (ClickHouse: all analytics). `event-logs` and `plausible-data` (time-zone cache, temp files) are disposable.
+
+Dokploy's **"fresh volumes"** redeploy option runs `docker compose down -v`, which deletes every named volume compose manages. To protect the two data volumes, set `PLAUSIBLE_EXTERNAL_VOLUMES=true` in the Environment tab once the stack has been deployed at least once. They become `external`, which compose never deletes. The names match the ones compose already uses, so the existing volumes are adopted as-is. Don't set it on a first deploy: an external volume must already exist (or create them first with `docker volume create <project>_db-data` / `<project>_event-data`).
+
 ### Database Credentials
 
 Postgres runs with the default `postgres`/`postgres` credentials. It is not published to the host — only containers on the same Docker network can reach it — and Plausible connects using its built-in `DATABASE_URL` default.
