@@ -71,11 +71,18 @@ services:
       resources:
         limits:
           memory: "${PLAUSIBLE_MEMORY_LIMIT:-1G}"
-    ports:
+    # expose, not ports: Dokploy's Traefik reaches it over the Docker network.
+    expose:
       - 8000
 
+# Set PLAUSIBLE_EXTERNAL_VOLUMES=true (after the first deploy) to protect the
+# data volumes from `docker compose down -v`. See README "Data Volumes".
 volumes:
   db-data:
+    name: ${COMPOSE_PROJECT_NAME}_db-data
+    external: ${PLAUSIBLE_EXTERNAL_VOLUMES:-false}
   event-data:
+    name: ${COMPOSE_PROJECT_NAME}_event-data
+    external: ${PLAUSIBLE_EXTERNAL_VOLUMES:-false}
   event-logs:
   plausible-data:
