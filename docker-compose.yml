@@ -71,18 +71,12 @@ services:
       resources:
         limits:
           memory: "${PLAUSIBLE_MEMORY_LIMIT:-1G}"
-    # Not `ports:` - that publishes 8000 on a random host port on all
-    # interfaces, reachable over plain HTTP from the LAN. Dokploy's Traefik
-    # reaches the container over the Docker network; `expose` is doc-only.
+    # expose, not ports: Dokploy's Traefik reaches it over the Docker network.
     expose:
       - 8000
 
-# db-data (sites, users, settings) and event-data (all analytics) are the only
-# volumes that matter. Set PLAUSIBLE_EXTERNAL_VOLUMES=true in Dokploy to make
-# them external, so a "fresh volumes" redeploy (docker compose down -v) or
-# deleting the app can't delete them. Leave it unset on a first deploy: an
-# external volume must already exist. The names match what compose creates by
-# default, so switching it on later adopts the existing volumes.
+# Set PLAUSIBLE_EXTERNAL_VOLUMES=true (after the first deploy) to protect the
+# data volumes from `docker compose down -v`. See README "Data Volumes".
 volumes:
   db-data:
     name: ${COMPOSE_PROJECT_NAME}_db-data

@@ -51,9 +51,9 @@ If you raise `CLICKHOUSE_MEMORY_LIMIT`, also raise `max_memory_usage` in `clickh
 
 ### Data Volumes
 
-Only two volumes hold data you can't get back: `db-data` (Postgres: sites, users, goals, settings) and `event-data` (ClickHouse: all analytics). `event-logs` and `plausible-data` (time-zone cache, temp files) are disposable.
+`db-data` (Postgres) and `event-data` (ClickHouse) hold all your data; the other volumes are disposable.
 
-Dokploy's **"fresh volumes"** redeploy option runs `docker compose down -v`, which deletes every named volume compose manages. To protect the two data volumes, set `PLAUSIBLE_EXTERNAL_VOLUMES=true` in the Environment tab once the stack has been deployed at least once. They become `external`, which compose never deletes. The names match the ones compose already uses, so the existing volumes are adopted as-is. Don't set it on a first deploy: an external volume must already exist (or create them first with `docker volume create <project>_db-data` / `<project>_event-data`).
+Dokploy's "fresh volumes" redeploy runs `docker compose down -v`, which deletes them. To prevent that, set `PLAUSIBLE_EXTERNAL_VOLUMES=true` **after the first deploy** (external volumes must already exist). Existing volumes are kept as-is.
 
 ### Database Credentials
 
